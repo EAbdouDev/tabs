@@ -221,7 +221,7 @@ export default function Account({ session }: any) {
 
   return (
     <div className=" w-full flex flex-col justify-start items-start gap-6 p-4 border rounded-lg max-w-[50rem]">
-      <div className="UserAvatar flex justify-start items-center w-full gap-6">
+      <div className="UserAvatar flex flex-col sm:flex-row justify-start items-center w-full gap-6">
         <Avatar
           src={
             avatar_url?.startsWith("https://lh3.googleusercontent")
@@ -257,12 +257,12 @@ export default function Account({ session }: any) {
         />
 
         {avatar_url?.startsWith(session.user.email) ? (
-          <div>Local Avatar</div>
+          <div className=" opacity-50 italic text-sm">Local Avatar</div>
         ) : (
           ""
         )}
         {avatar_url?.startsWith("https://lh3.googleusercontent") ? (
-          <div className="text-sm">
+          <div className="text-sm opacity-50 italic">
             Avatar is imported from your Google Account
           </div>
         ) : (

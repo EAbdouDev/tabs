@@ -7,7 +7,7 @@ interface AcoountSkelProps {}
 const AcoountSkel: FC<AcoountSkelProps> = ({}) => {
   return (
     <div className=" w-full flex flex-col justify-start items-start gap-6 p-4 border rounded-lg max-w-[50rem]">
-      <div className="UserAvatar flex justify-start items-center w-full gap-6">
+      <div className="UserAvatar flex flex-col sm:flex-row justify-start items-center w-full gap-6">
         <div className="rounded-lg animate-pulse">
           <div className="h-20 w-20 rounded-lg bg-[#2d2d2d]"></div>
         </div>

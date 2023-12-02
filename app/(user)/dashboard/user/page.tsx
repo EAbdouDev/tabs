@@ -24,12 +24,23 @@ const page: FC<pageProps> = ({}) => {
 
   return (
     <div>
-      <div className="Header container p-6 mt-10">
+      <div className="Header container p-6 mt-10 ">
         <h1 className=" text-3xl font-semibold ">User Settings</h1>
       </div>
 
-      <div className="flex w-full flex-col container mt-5 ">
-        <Tabs aria-label="Options">
+      <div className="flex w-full flex-col container mt-2  p-6  min-h-[500px] ">
+        <Tabs
+          aria-label="Options"
+          variant="underlined"
+          classNames={{
+            tabList:
+              "gap-8 w-full relative rounded-none p-0 border-b border-divider ",
+            cursor: "w-full bg-[#fafcfc]",
+            tab: "max-w-fit px-0 h-12",
+            tabContent:
+              "group-data-[selected=true]:text-[#fafcfc] group-data-[selected=true]:font-semibold text-base",
+          }}
+        >
           <Tab key="Profile" title="My Profile">
             <div className=" flex justify-center items-center mt-10">
               {!session ? (
