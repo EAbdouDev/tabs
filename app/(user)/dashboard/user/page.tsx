@@ -1,36 +1,56 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import Image from "next/image";
-import { redirect } from "next/navigation";
-import { FC } from "react";
+"use client";
+
+import Account from "@components/Account/Account";
+import AcoountSkel from "@components/Account/AcoountSkel";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { FC, useEffect, useState } from "react";
+import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 
 interface pageProps {}
 
-const page: FC<pageProps> = async ({}) => {
-  const cookiestore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookiestore });
+const page: FC<pageProps> = ({}) => {
+  const [session, setSession] = useState<any>(null);
+  const supabase = createClientComponentClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
-  if (!user) {
-    redirect("/userauth/login");
-  }
-
-  //   const { data, error } = await supabase
-  //     .from("profiles")
-  //     .select("*")
-  //     .eq("id", user.id);
-
-  //   console.log(data);
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
 
   return (
     <div>
-      {/* user:{" "}
-      {data?.map((u) => (
-        <img src={u.avatar_url} alt="s" width={100} />
-      ))}{" "} */}
+      <div className="Header container p-6 mt-10">
+        <h1 className=" text-3xl font-semibold ">User Settings</h1>
+      </div>
+
+      <div className="flex w-full flex-col container mt-5 ">
+        <Tabs aria-label="Options">
+          <Tab key="Profile" title="My Profile">
+            <div className=" flex justify-center items-center mt-10">
+              {!session ? (
+                <AcoountSkel />
+              ) : (
+                <Account key={session.user.id} session={session} />
+              )}
+            </div>
+          </Tab>
+          <Tab key="Plan" title="My Plan">
+            <div className=" flex justify-center items-center mt-10">
+              Plan Setting and billing
+            </div>
+          </Tab>
+          <Tab key="appearance" title="Appearance">
+            <div className=" flex justify-center items-center mt-10">
+              Appearance Settings and App theme{" "}
+            </div>
+          </Tab>
+        </Tabs>
+      </div>
     </div>
   );
 };

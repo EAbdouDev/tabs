@@ -1,26 +1,37 @@
 "use client";
-import { Button } from "@nextui-org/react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import UserComp from "./UserComp";
+import Image from "next/image";
+import Logo from "@public/branding/LogoWithTextDark-01.png";
+import Link from "next/link";
 
 interface userNavbarProps {}
 
-const UserNavbar: FC<userNavbarProps> = ({}) => {
-  const supbase = createClientComponentClient();
-  const router = useRouter();
+const userNavbar: FC<userNavbarProps> = ({}) => {
+  const [session, setSession] = useState<any>(null);
+  const supabase = createClientComponentClient();
 
-  const handleSignout = async () => {
-    await supbase.auth.signOut();
-    router.push("/");
-  };
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
   return (
-    <div>
-      <Button variant="bordered" color="danger" onClick={handleSignout}>
-        Logout
-      </Button>
+    <div className=" border-b py-4 px-12 flex justify-between items-center">
+      <div className="Branding">
+        <Link href={"/"}>
+          <Image src={Logo} alt="Tabs_Logo" width={100} />
+        </Link>
+      </div>
+      <div>{!session ? "" : <UserComp session={session} />}</div>
     </div>
   );
 };
 
-export default UserNavbar;
+export default userNavbar;
