@@ -5,7 +5,6 @@ import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 
 const Weather = () => {
-  const [city, setCity] = useState(getCookie("city")); // Set a default city
   const [data, setData] = useState<any>({});
 
   useEffect(() => {
@@ -17,7 +16,7 @@ const Weather = () => {
       // Set default or handle the case when there's no data in the cookie
       setData({});
     }
-  }, [city]);
+  }, []);
 
   // Check if data or data.weather is undefined before rendering
   if (!data || !data.weather) {

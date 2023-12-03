@@ -101,14 +101,14 @@ function AppIcon({ mouseY, link, icon, name }: AppIconProps) {
     let bounds = ref.current?.getBoundingClientRect() ?? { y: 0, height: 0 };
     return val - bounds.y - bounds.height / 2;
   });
-  let heightSync = useTransform(distance, [-200, 0, 200], [40, 85, 40]); // Change from width to height
+  let heightSync = useTransform(distance, [-200, 0, 200], [40, 60, 40]); // Change from width to height
   let height = useSpring(heightSync, {
     damping: 15,
     mass: 0.1,
     stiffness: 200,
   });
 
-  let scaleSync = useTransform(distance, [-200, 0, 200], [0.8, 1, 0.8]);
+  let scaleSync = useTransform(distance, [-150, 0, 150], [0.8, 0.9, 0.8]);
   let scale = useSpring(scaleSync, { damping: 15, mass: 0.1, stiffness: 200 });
 
   return (
