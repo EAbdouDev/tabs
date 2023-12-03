@@ -89,6 +89,11 @@ export default function Account({ session }: any) {
       alert(error.message);
     } else {
       setAvatarUrl(avatarUrl);
+      toast({
+        title: "Your username updated successfully",
+        variant: "succ",
+        duration: 9000,
+      });
     }
     setLoading(false);
     setDisabled(true);
@@ -204,8 +209,8 @@ export default function Account({ session }: any) {
       });
     }
     toast({
-      title: "Avatar url updated",
-
+      title: "Your avatar updated successfully",
+      variant: "succ",
       duration: 9000,
     });
   };

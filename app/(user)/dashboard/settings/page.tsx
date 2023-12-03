@@ -6,11 +6,16 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { FC, useEffect, useState } from "react";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import DeleteAccount from "@components/Settings/DeleteAccount";
+import WeatherData from "@components/weather/WeatherData";
+import WeatherSettings from "@components/weather/WeatherSettings";
+import { useSearchParams } from "next/navigation";
+import Weather from "@components/weather/WeatherCard";
 
 interface pageProps {}
 
 const page: FC<pageProps> = ({}) => {
   const [session, setSession] = useState<any>(null);
+  const [selectedTab, setSelectedTab] = useState<any>("Profile");
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -60,8 +65,15 @@ const page: FC<pageProps> = ({}) => {
             </div>
           </Tab>
           <Tab key="appearance" title="Appearance">
-            <div className=" flex justify-center items-center mt-10">
+            <div className=" flex justify-center items-center mt-6">
               Appearance Settings and App theme{" "}
+            </div>
+          </Tab>
+          <Tab key="tw" title="Time and Weather">
+            <div className=" flex justify-center items-center mt-6">
+              <WeatherSettings />
+
+              <Weather />
             </div>
           </Tab>
         </Tabs>

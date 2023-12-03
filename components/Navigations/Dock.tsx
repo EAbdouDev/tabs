@@ -1,5 +1,6 @@
 "use client";
 
+import { Tooltip } from "@nextui-org/react";
 import {
   useMotionValue,
   useTransform,
@@ -12,8 +13,10 @@ import {
   CloudLightning,
   FileText,
   FolderKanban,
+  Home,
   ListTodo,
   MessageCircle,
+  Settings,
 } from "lucide-react";
 import Link from "next/link";
 import { FC, useRef } from "react";
@@ -21,30 +24,31 @@ import { FC, useRef } from "react";
 interface DockProps {}
 
 const Dock: FC<DockProps> = ({}) => {
-  let mouseX = useMotionValue(Infinity);
-  let widthSync = useTransform(mouseX, [0, 300], [40, 80]);
-  let width = useSpring(widthSync);
+  let mouseY = useMotionValue(Infinity); // Change from mouseX to mouseY
+  let heightSync = useTransform(mouseY, [0, 300], [40, 80]); // Change from width to height
+  let height = useSpring(heightSync);
 
   const Apps = [
     {
+      name: "Home",
+      icon: <Home className={`w-7 h-7`} />,
+      path: "/dashboard",
+    },
+    {
       name: "Tabs Docs",
       icon: <FileText className={`w-7 h-7`} />,
-      path: "/",
+      path: "/dashboard/tabsdocs",
     },
     {
       name: "Tabs Plan",
       icon: <FolderKanban className={`w-7 h-7`} />,
-      path: "/",
+      path: "/dashboard/tabsplan",
     },
-    {
-      name: "Tabs Weather",
-      icon: <CloudLightning className={`w-7 h-7`} />,
-      path: "/",
-    },
+
     {
       name: "Tabs ToDo",
       icon: <ListTodo className={`w-7 h-7`} />,
-      path: "/",
+      path: "/dashboard/tabstodo",
     },
     {
       name: "Tabs Brain",
@@ -53,22 +57,27 @@ const Dock: FC<DockProps> = ({}) => {
     },
     {
       name: "Tabs Chat",
-      icon: <MessageCircle className={`w-7 h-7`} />,
+      icon: <MessageCircle className={`w-7 h-7 text-red-400 `} />,
       path: "/",
+    },
+    {
+      name: "Tabs Settings",
+      icon: <Settings className={`w-7 h-7`} />,
+      path: "/dashboard/settings",
     },
   ];
   return (
     <div
       onMouseMove={(e) => {
-        mouseX.set(e.pageX);
+        mouseY.set(e.pageY); // Change from e.pageX to e.pageY
       }}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      className=" mx-auto h-16 flex justify-center items-end pb-3  gap-4 rounded-2xl bg-[#0f0f0f] backdrop-blur-md border p-4"
+      onMouseLeave={() => mouseY.set(Infinity)}
+      className="mx-auto w-16 flex flex-col items-center justify-center gap-4 rounded-2xl bg-[#0f0f0f] backdrop-blur-md border p-4"
     >
       {Apps.map((i, idx) => (
         <AppIcon
           key={idx}
-          mouseX={mouseX}
+          mouseY={mouseY} // Change from mouseX to mouseY
           link={i.path}
           name={i.name}
           icon={i.icon}
@@ -81,37 +90,41 @@ const Dock: FC<DockProps> = ({}) => {
 export default Dock;
 
 interface AppIconProps {
-  mouseX: MotionValue;
+  mouseY: MotionValue; // Change from mouseX to mouseY
   link: any;
   icon: any;
   name: any;
 }
-function AppIcon({ mouseX, link, icon, name }: AppIconProps) {
+function AppIcon({ mouseY, link, icon, name }: AppIconProps) {
   let ref = useRef<HTMLDivElement>(null);
-  let distance = useTransform(mouseX, (val) => {
-    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
-
-    return val - bounds.x - bounds.width / 2;
+  let distance = useTransform(mouseY, (val) => {
+    let bounds = ref.current?.getBoundingClientRect() ?? { y: 0, height: 0 };
+    return val - bounds.y - bounds.height / 2;
   });
-  let widthSync = useTransform(distance, [-200, 0, 200], [40, 85, 40]);
-  let width = useSpring(widthSync, { damping: 15, mass: 0.1, stiffness: 200 });
+  let heightSync = useTransform(distance, [-200, 0, 200], [40, 85, 40]); // Change from width to height
+  let height = useSpring(heightSync, {
+    damping: 15,
+    mass: 0.1,
+    stiffness: 200,
+  });
 
-  // MotionValue for scale
   let scaleSync = useTransform(distance, [-200, 0, 200], [0.8, 1, 0.8]);
   let scale = useSpring(scaleSync, { damping: 15, mass: 0.1, stiffness: 200 });
 
   return (
     <motion.div
-      style={{ width: width, scale: scale }}
+      style={{ height: height, scale: scale }} // Change from width to height
       ref={ref}
-      className=" aspect-square w-10   rounded-full bg-[#1c1c1c] flex justify-center items-center"
+      className="aspect-square h-10 rounded-full bg-[#1c1c1c] flex justify-center items-center"
     >
-      <Link
-        href={link}
-        className=" flex justify-center items-center w-full h-full "
-      >
-        {icon}
-      </Link>
+      <Tooltip showArrow={true} content={name} placement="right">
+        <Link
+          href={link}
+          className="flex justify-center items-center w-full h-full outline-none"
+        >
+          {icon}
+        </Link>
+      </Tooltip>
     </motion.div>
   );
 }

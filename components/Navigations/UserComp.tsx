@@ -91,7 +91,7 @@ const UserComp: FC<UserCompProps> = ({ session }) => {
         <DropdownItem
           key="settings"
           className="w-full"
-          href={`/dashboard/${userId}/settings`}
+          href={`/dashboard/settings`}
         >
           My Settings
         </DropdownItem>

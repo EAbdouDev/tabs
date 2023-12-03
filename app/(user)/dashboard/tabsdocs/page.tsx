@@ -1,4 +1,4 @@
-import HeyComp from "@components/dashboardHome/HeyComp";
+import PagesHeader from "@components/Navigations/PagesHeader";
 import { FC } from "react";
 
 interface pageProps {}
@@ -7,7 +7,7 @@ const page: FC<pageProps> = ({}) => {
   return (
     <div>
       <header>
-        <HeyComp />
+        <PagesHeader text="Tabs Docs" />
       </header>
     </div>
   );

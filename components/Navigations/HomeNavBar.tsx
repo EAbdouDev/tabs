@@ -51,7 +51,7 @@ const HomeNavBar: FC<HomeNavBarProps> = ({}) => {
         ) : (
           <div>
             {userID ? (
-              <Link href={`/dashboard/${userID}`}>Dashboard</Link>
+              <Link href={`/dashboard`}>Dashboard</Link>
             ) : (
               <Link href={"/userauth/login"}>Login</Link>
             )}
