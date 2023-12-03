@@ -56,6 +56,7 @@ const SignForm: FC<pageProps> = ({}) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const { data, error } = await supbase.auth.signUp({
       email: values.useremail,
       password: values.password,
@@ -68,6 +69,7 @@ const SignForm: FC<pageProps> = ({}) => {
       if (typeof window !== "undefined") {
         localStorage.setItem("email", values.useremail);
       }
+      setIsLoading(false);
       router.push("/userauth/emailConfi");
     } else return null;
   }
@@ -203,10 +205,11 @@ const SignForm: FC<pageProps> = ({}) => {
           <Button
             color="primary"
             isLoading={isLoading}
+            isDisabled={isLoading}
             type="submit"
             className="w-full"
           >
-            Sign up
+            {isLoading ? "Creating new account..." : "Create new account "}
           </Button>
         </div>
       </form>

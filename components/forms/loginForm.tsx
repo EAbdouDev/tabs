@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -35,9 +35,14 @@ const LoginForm: FC<pageProps> = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSucc, setIsSucc] = useState(false);
   const [error, setError] = useState(false);
+  const [userID, setuserID] = useState<any>(null);
+  const [userOrg, setuserORG] = useState<any>(null);
+
   const router = useRouter();
 
   const supabase = createClientComponentClient();
+
+  console.log(userID, userOrg);
 
   const getURL = () => {
     let url =
@@ -71,7 +76,22 @@ const LoginForm: FC<pageProps> = ({}) => {
       setIsLoading(false);
     } else {
       setError(false);
-      router.push("/dashboard");
+
+      // Fetch user and org data after successful login
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setuserID(user?.id);
+
+      const { data: orgsData, error } = await supabase
+        .from("organizations")
+        .select("id,name, is_org_main, created_at, updated_at")
+        .eq("user_id", user?.id)
+        .single();
+      setuserORG(orgsData?.id);
+
+      // Redirect to the appropriate URL
+      router.push(`/dashboard/${user?.id}/org/${orgsData?.id}`);
     }
   }
 

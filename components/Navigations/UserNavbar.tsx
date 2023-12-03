@@ -24,8 +24,8 @@ const userNavbar: FC<userNavbarProps> = ({}) => {
 
   return (
     <div className=" border-b py-4 px-12 flex justify-between items-center">
-      <div className="Branding">
-        <Link href={"/"}>
+      <div className="Branding flex justify-center items-center gap-4">
+        <Link href={"/dashboard"} className=" border-r pr-5">
           <Image src={Logo} alt="Tabs_Logo" width={100} />
         </Link>
       </div>

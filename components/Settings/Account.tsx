@@ -10,7 +10,6 @@ export default function Account({ session }: any) {
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(true);
   const [username, setUsername] = useState(null);
-  const [website, setWebsite] = useState(null);
   const [avatar_url, setAvatarUrl] = useState<any>(null);
   const [userDBData, setuserDBData] = useState<any>(null);
   const supabase = createClientComponentClient();
@@ -46,7 +45,7 @@ export default function Account({ session }: any) {
 
       const { data, error } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(`username,  avatar_url`)
         .eq("id", user.id)
         .single();
       setuserDBData(data);
@@ -55,7 +54,6 @@ export default function Account({ session }: any) {
           console.warn(error);
         } else if (data) {
           setUsername(data.username);
-          setWebsite(data.website);
           setAvatarUrl(data.avatar_url);
         }
       }
@@ -294,6 +292,7 @@ export default function Account({ session }: any) {
               type="text"
               required
               value={username || ""}
+              placeholder="Amazing M..."
               onChange={handleNameChange}
               endContent={
                 <button onClick={() => setIsEditing(false)} className="text-sm">
@@ -306,7 +305,13 @@ export default function Account({ session }: any) {
               onClick={handleEdit}
               className=" border-2 w-full p-4 rounded-lg"
             >
-              {username}
+              {username ? (
+                username
+              ) : (
+                <span className=" italic opacity-60">
+                  Double click to add your username
+                </span>
+              )}
             </h1>
           )}
         </div>

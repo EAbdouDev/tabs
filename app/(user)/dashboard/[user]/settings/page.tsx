@@ -1,10 +1,11 @@
 "use client";
 
-import Account from "@components/Account/Account";
-import AcoountSkel from "@components/Account/AcoountSkel";
+import Account from "@components/Settings/Account";
+import AcoountSkel from "@components/Settings/AcoountSkel";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { FC, useEffect, useState } from "react";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import DeleteAccount from "@components/Settings/DeleteAccount";
 
 interface pageProps {}
 
@@ -42,14 +43,17 @@ const page: FC<pageProps> = ({}) => {
           }}
         >
           <Tab key="Profile" title="My Profile">
-            <div className=" flex justify-center items-center mt-10">
+            <div className=" flex flex-col justify-center items-center mt-10 gap-6">
               {!session ? (
                 <AcoountSkel />
               ) : (
                 <Account key={session.user.id} session={session} />
               )}
+
+              <DeleteAccount />
             </div>
           </Tab>
+
           <Tab key="Plan" title="My Plan">
             <div className=" flex justify-center items-center mt-10">
               Plan Setting and billing

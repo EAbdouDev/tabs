@@ -13,7 +13,8 @@ interface HomeNavBarProps {}
 const HomeNavBar: FC<HomeNavBarProps> = ({}) => {
   const supbase = createClientComponentClient();
 
-  const [user, setUser] = useState<any>(null);
+  const [userID, setuserID] = useState<any>(null);
+  const [userOrg, setuserORG] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,11 +22,12 @@ const HomeNavBar: FC<HomeNavBarProps> = ({}) => {
       const {
         data: { user },
       } = await supbase.auth.getUser();
-      setUser(user);
-      setLoading(false);
+      setuserID(user?.id);
     }
 
     getUser();
+
+    setLoading(false);
   }, []);
 
   return (
@@ -48,8 +50,8 @@ const HomeNavBar: FC<HomeNavBarProps> = ({}) => {
           ""
         ) : (
           <div>
-            {user ? (
-              <Link href={"/dashboard"}>Dashboard</Link>
+            {userID ? (
+              <Link href={`/dashboard/${userID}`}>Dashboard</Link>
             ) : (
               <Link href={"/userauth/login"}>Login</Link>
             )}

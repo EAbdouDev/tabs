@@ -19,8 +19,8 @@ interface UserCompProps {
 const UserComp: FC<UserCompProps> = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState<any>(null);
-  const [website, setWebsite] = useState<any>(null);
   const [avatar_url, setAvatarUrl] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null);
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const UserComp: FC<UserCompProps> = ({ session }) => {
 
       const { data, error } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(`id, username, avatar_url`)
         .eq("id", user.id)
         .single();
 
@@ -40,7 +40,7 @@ const UserComp: FC<UserCompProps> = ({ session }) => {
           console.warn(error);
         } else if (data) {
           setUsername(data.username);
-          setWebsite(data.website);
+          setUserId(data.id);
           setAvatarUrl(data.avatar_url);
         }
       }
@@ -88,7 +88,11 @@ const UserComp: FC<UserCompProps> = ({ session }) => {
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session.user.email}</p>
         </DropdownItem>
-        <DropdownItem key="settings" className="w-full" href="/dashboard/user">
+        <DropdownItem
+          key="settings"
+          className="w-full"
+          href={`/dashboard/${userId}/settings`}
+        >
           My Settings
         </DropdownItem>
         <DropdownItem key="team_settings">Team Settings</DropdownItem>

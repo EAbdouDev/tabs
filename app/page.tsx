@@ -8,6 +8,7 @@ export default function Home() {
       <nav>
         <HomeNavBar />
       </nav>
+
       <main>Helloo</main>
     </div>
   );
