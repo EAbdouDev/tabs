@@ -57,7 +57,7 @@ const Dock: FC<DockProps> = ({}) => {
     },
     {
       name: "Tabs Chat",
-      icon: <MessageCircle className={`w-7 h-7 text-red-400 `} />,
+      icon: <MessageCircle className={`w-7 h-7  `} />,
       path: "/",
     },
     {

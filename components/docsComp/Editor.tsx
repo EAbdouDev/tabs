@@ -226,7 +226,7 @@ const TextEditor: FC<TextEditorProps> = ({ payload }) => {
   };
 
   return (
-    <div className="  ">
+    <div className=" ">
       <div className="flex flex-col justify-start gap-6  px-6 pt-6 transition-all ease-soft-spring  rounded-lg   ">
         <div
           className={` bg-[#1c1c1c] sticky top-0 w-full transition-all ease-soft-spring  rounded-lg ${
@@ -250,11 +250,12 @@ const TextEditor: FC<TextEditorProps> = ({ payload }) => {
           </div>
           <Toolbar editor={editor} />
         </div>
-        <ScrollShadow className="max-w-full  h-full ">
+        <ScrollShadow className="max-w-full  h-full  ">
           <EditorContent
             editor={editor}
             onChange={handleChangeBody}
             content={text}
+            className=""
           />
         </ScrollShadow>
       </div>
