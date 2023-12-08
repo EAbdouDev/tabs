@@ -30,7 +30,7 @@ const page: FC<pageProps> = ({}) => {
 
   return (
     <div>
-      <div className="Header container p-6 mt-10 ">
+      <div className="Header container p-6  ">
         <h1 className=" text-3xl font-semibold ">User Settings</h1>
       </div>
 
