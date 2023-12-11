@@ -34,7 +34,6 @@ const Footer: FC<FooterProps> = ({}) => {
   const charCount = useWords((state) => state.charCount);
   const status = useStatus((state) => state.status);
   const Message = useStatus((state) => state.errorMessage);
-  const isLoading = useStatus((state) => state.loading);
   const pathName = usePathname();
 
   const getUserData = async () => {
@@ -52,21 +51,15 @@ const Footer: FC<FooterProps> = ({}) => {
       <div className=" flex gap-8">
         <h1 className="text-sm opacity-50">Beta v0.0012</h1>
         <div className="flex justify-start items-center gap-2 cursor-pointer ">
-          {isLoading ? (
-            <div></div>
-          ) : (
-            <>
-              {" "}
-              <div
-                className={`w-3 h-3 ${
-                  status ? "bg-red-500" : "bg-green-500"
-                } rounded-full opacity-60`}
-              ></div>
-              <Tooltip content={Message ? Message : "No errors so far"}>
-                <h3>{!status ? "All systems good" : "Error somewhere"}</h3>
-              </Tooltip>
-            </>
-          )}
+          {" "}
+          <div
+            className={`w-3 h-3 ${
+              status ? "bg-red-500" : "bg-green-500"
+            } rounded-full opacity-60`}
+          ></div>
+          <Tooltip content={Message ? Message : "No errors so far"}>
+            <h3>{!status ? "All systems good" : "Error somewhere"}</h3>
+          </Tooltip>
         </div>
       </div>
       {pathName === "/dashboard/tabsdocs" ? (
