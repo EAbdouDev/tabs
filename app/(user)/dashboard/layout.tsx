@@ -39,8 +39,8 @@ const layout: FC<layoutProps> = async ({ children }) => {
             <Dock />
           </nav>
 
-          <aside className="sm:w-40 hidden lg:flex   overflow-y-auto border-l">
-            Right Sidebar
+          <aside className="sm:w-64 hidden lg:flex   overflow-y-auto border-l p-2">
+            <h1 className=" text-lg font-medium">Recent Events </h1>
           </aside>
         </div>
         {/* <!-- end main container --> */}

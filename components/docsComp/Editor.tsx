@@ -27,6 +27,7 @@ import { ScrollShadow } from "@nextui-org/react";
 import CharacterCount from "@tiptap/extension-character-count";
 import { getCookie, setCookie } from "cookies-next";
 import { useFileName, useWords } from "@states/editor";
+import { useStatus } from "@states/Status";
 
 interface TextEditorProps {
   payload?: any;
@@ -34,8 +35,13 @@ interface TextEditorProps {
 
 const TextEditor: FC<TextEditorProps> = ({ payload }) => {
   const [text, setText] = useState<any>("");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const updateWordCount = useWords((state) => state.updateWordCount);
+  const updateCharCount = useWords((state) => state.updateCharCount);
 
   const editor = useEditor({
+    editable: true,
+    content: `${getCookie("txt_editor_332211")}`,
     onUpdate: ({ editor }) => {
       handleChangeBody(editor.getHTML());
     },
@@ -130,28 +136,11 @@ const TextEditor: FC<TextEditorProps> = ({ payload }) => {
     },
   });
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const updateWordCount = useWords((state) => state.updateWordCount);
-  const updateCharCount = useWords((state) => state.updateCharCount);
-
   const handleChangeBody = async (data: any) => {
-    setText(data);
+    setText(editor?.getHTML());
     setCookie("txt_editor_332211", text, { maxAge: 360000 });
     updateWordCount(editor?.storage.characterCount.words());
     updateCharCount(editor?.storage.characterCount.characters());
-    const promptIndex = data.trim().lastIndexOf("/brain:");
-    if (promptIndex !== -1 && data.trim().endsWith("\n")) {
-      const prompt = data.trim().substring(promptIndex + 7);
-      try {
-        const reponse = "hello";
-        const newContent = data.trim() + "\n" + reponse;
-        setText(newContent);
-        editor?.commands.setContent(newContent);
-      } catch (error) {
-        console.error("Error calling OpenAI API:", error);
-        // Handle errors gracefully, e.g., display an error message to the user
-      }
-    }
   };
 
   // Function to load editor content from a cookie
@@ -217,6 +206,8 @@ const TextEditor: FC<TextEditorProps> = ({ payload }) => {
       reader.onload = (e) => {
         const fileContent = e.target?.result as string;
         editor?.commands.setContent(fileContent);
+        setCookie("txt_editor_332211", fileContent);
+
         updateWordCount(editor?.storage.characterCount.words());
         updateCharCount(editor?.storage.characterCount.characters());
       };
